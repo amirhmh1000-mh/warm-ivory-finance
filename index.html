@@ -353,7 +353,7 @@ function awInputChanged(input){
  if(!/^\d*$/.test(raw)||raw.length>16){input.setCustomValidity('مقدار باید عدد صحیح نامنفی باشد');input.reportValidity();return}
  const amount=raw===''?0:Number(raw);
  if(!Number.isSafeInteger(amount)||amount<0){input.setCustomValidity('عدد نامعتبر یا بیش از حد بزرگ است');input.reportValidity();return}
- input.setCustomValidity('');awDraft[account][cat]=amount;awDirty=true;awRefreshDisplay();
+ input.setCustomValidity('');formatTxAmount(input);awDraft[account][cat]=amount;awDirty=true;awRefreshDisplay();
 }
 function awBind(){
  const form=document.getElementById('awForm');if(!form)return;

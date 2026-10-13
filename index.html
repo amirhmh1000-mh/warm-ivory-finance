@@ -230,9 +230,10 @@ function removeCategory(i){const name=allCategories()[i];if(!name)return;const l
 document.addEventListener('click',e=>{const btn=e.target.closest?.('[data-cat-action][data-cat-index]');if(!btn)return;e.preventDefault();const i=Number(btn.dataset.catIndex);if(btn.dataset.catAction==='edit')renameCategory(i);else if(btn.dataset.catAction==='delete')removeCategory(i)});
 function download(blob,name){let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000)}function backup(){let content=JSON.stringify({...db,lastBackup:new Date().toISOString()},null,2);download(new Blob([content],{type:'application/json;charset=utf-8'}),'warm-ivory-backup-'+iso()+'.json');db.lastBackup=new Date().toISOString();save();render()}
 const smartCatRules=[
- ['سفر',/(بلیط|بلیت|رزرو).*(اتوبوس|هواپیما|قطار|هتل)|(اتوبوس|هواپیما|قطار).*(بلیط|بلیت)/i],
+ ['حمل و نقل',/(پارکینگ|بنزین|تاکسی|اسنپ تا|کرایه|مترو|اتوبوس|شارژ.*(کارت|مترو|اتوبوس)|عوارض آزادراه|عوارض ازادراه|(?:بلیط|بلیت).*(?:اتوبوس|مترو|قطار)|(?:اتوبوس|مترو|قطار).*(?:بلیط|بلیت))/i],
+ ['سفر',/(رزرو.*(?:هتل|اقامتگاه)|(?:بلیط|بلیت).*(?:هواپیما|پرواز)|(?:هواپیما|پرواز).*(?:بلیط|بلیت))/i],
  ['اقساط(خودرو / وام)',/(قسط|اقساط|وام ازدواج|پرداخت بدهی)/i],
- ['حمل و نقل',/(بنزین|پارکینگ|تاکسی|اسنپ تا|کرایه|مترو|اتوبوس برقی|عوارض آزادراه|عوارض ازادراه)/i],
+
  ['قبوض(موبایل / جریمه / ترافیک)',/(قبض|خلافی|جریمه|اینترنت|شارژ ایرانسل|نت ایرانسل|نت مغازه|شارژ موبایل|همراه اول)/i],
  ['رستوران / کافه',/(ناهار|شام|صبحانه|رستوران|کافه|کافی شاپ|delepe|د ل پ)/i],
  ['سلامت و درمان',/(داروخانه|دارو|ویزیت|دندانپزش|پزشک|بیمارستان|آزمایشگاه)/i],
@@ -263,6 +264,8 @@ function previewSmartCategories(){
    if(!Array.isArray(db.transactions))throw Error('فهرست تراکنش‌ها در دسترس نیست');
    const changes=smartCategoryChanges(),summary={};
    for(const c of changes)summary[c.category]=(summary[c.category]||0)+1;
+   const summaryCount=Object.values(summary).reduce((a,b)=>a+b,0);
+   if(summaryCount!==changes.length)throw Error('جمع دسته‌بندی‌ها با تعداد تراکنش‌های پیشنهادی همخوانی ندارد');
    const message=changes.length
     ? '✅ تعداد '+changes.length.toLocaleString('fa-IR')+' تراکنش برای دسته‌بندی پیشنهاد شد. '+Object.entries(summary).map(([k,v])=>k+': '+v.toLocaleString('fa-IR')).join(' | ')+'. دسته‌بندی‌های قبلی و موارد مبهم بدون تغییر می‌مانند.'
     : '⚠️ هیچ تراکنش قدیمی بدون دسته‌بندی قابل‌تشخیص پیدا نشد. تعداد کل تراکنش‌ها: '+db.transactions.length.toLocaleString('fa-IR');

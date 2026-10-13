@@ -92,7 +92,48 @@ body.dark[data-palette="mist"]{--bg:#15222e;--card:#213140;--sidebar:#192a39;--t
 .appearance-modes button{padding:10px;border-radius:11px;border:1px solid var(--border);background:var(--card);color:var(--text)}
 .appearance-modes button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:800}
 @media(max-width:650px){.appearance-panel{right:12px;bottom:12px;width:min(360px,calc(100vw - 24px));max-height:calc(100vh - 24px)}}
-</style></head><body class="cloud-locked"><section id="cloudAuth" class="cloud-auth"><div class="cloud-auth-card"><div class="auth-icon">💳</div><div class="auth-eyebrow">WARM IVORY • PRIVATE FINANCE</div><h1>سامانه مدیریت مالی امیرحسین</h1><p>با حساب خصوصی خودت وارد شو تا اطلاعات شرکت و خانه از یک پایگاه داده امن بارگذاری شوند.</p><form id="cloudLoginForm" onsubmit="cloudLogin(event)"><label for="cloudEmail">ایمیل</label><input id="cloudEmail" type="email" autocomplete="username" required placeholder="you@example.com"><label for="cloudPassword">رمز عبور</label><input id="cloudPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="رمز عبور"><button type="submit" id="cloudLoginBtn" class="btn primary">ورود به سامانه</button></form><div class="auth-actions"><button type="button" class="btn" onclick="cloudSignup()">ساخت حساب جدید</button><button type="button" class="btn" onclick="cloudResetPassword()">بازیابی رمز</button></div><div id="cloudAuthMessage" role="status" class="auth-message">برای شروع، حساب کاربری خودت را بساز یا وارد شو.</div></div></section><div id="cloudStatus" class="cloud-status hidden" role="status"></div><aside><div class="brand">Warm Ivory ✦<div class="sub">مدیریت مالی شخصی</div></div><button class="nav active" data-page="dashboard">🏠 نمای کلی</button><button class="nav" data-page="transactions">💸 تراکنش‌ها</button><button class="nav" data-page="accounts">🏦 حساب‌ها و کیف پول‌ها</button><button class="nav" data-page="reports">📊 گزارش‌ها و نمودارها</button><button class="nav" data-page="settings">🛠️ تنظیمات و پشتیبان</button><button class="btn mode" id="appearanceBtn" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearancePanel()">🎨 شخصی‌سازی ظاهر</button><button class="btn mode" id="signOutBtn" onclick="cloudSignOut()">↪ خروج از حساب</button></aside><div id="appearancePanel" class="appearance-panel" role="region" aria-label="شخصی‌سازی ظاهر" hidden><div class="appearance-head"><strong>🎨 شخصی‌سازی ظاهر</strong><button class="btn" type="button" onclick="toggleAppearancePanel(false)" aria-label="بستن تنظیمات ظاهر">✕</button></div><p class="appearance-help">یکی از سه قالب رو انتخاب کن؛ حالت روشن و تاریک برای هر سه قالب در دسترسه.</p><span class="appearance-label">قالب رنگی</span><div class="palette-list"><button type="button" class="palette-choice" data-palette-choice="ivory" aria-pressed="true" onclick="setAppearancePalette('ivory')"><span class="palette-swatch ivory" aria-hidden="true"></span><span>Warm Ivory<small>کرم و قهوه‌ای فعلی</small></span></button><button type="button" class="palette-choice" data-palette-choice="sage" aria-pressed="false" onclick="setAppearancePalette('sage')"><span class="palette-swatch sage" aria-hidden="true"></span><span>Sage Green<small>سبز ملایم و آرام</small></span></button><button type="button" class="palette-choice" data-palette-choice="mist" aria-pressed="false" onclick="setAppearancePalette('mist')"><span class="palette-swatch mist" aria-hidden="true"></span><span>Mist Blue<small>آبی طوسی حرفه‌ای</small></span></button></div><span class="appearance-label">حالت نمایش</span><div class="appearance-modes"><button type="button" data-appearance-mode="light" aria-pressed="true" onclick="setAppearanceMode('light')">☀️ روشن</button><button type="button" data-appearance-mode="dark" aria-pressed="false" onclick="setAppearanceMode('dark')">🌙 تاریک</button></div></div><main><header class="top"><div><h1 id="heading">سامانه مدیریت مالی امیرحسین</h1><div class="sub" id="subtitle">داشبورد مدیریت مالی • ریال</div></div></header><div id="content"></div><div class="footer">Warm Ivory ✦ اطلاعات روی پایگاه داده خصوصی ذخیره می‌شوند؛ برای امنیت بیشتر نسخه پشتیبان JSON هم بگیرید.</div></main><div id="modalRoot"></div><script>
+
+.sidebar-group{border:1px solid var(--border);border-radius:14px;background:var(--card);margin:12px 0;overflow:hidden}
+.sidebar-group summary{list-style:none;cursor:pointer;padding:13px 10px;font-size:13px;font-weight:800;line-height:1.8;position:relative;padding-left:25px;color:var(--text)}
+.sidebar-group summary::-webkit-details-marker{display:none}
+.sidebar-group summary:after{content:"⌄";position:absolute;left:11px;top:12px;color:var(--accent)}
+.sidebar-group[open] summary:after{content:"⌃"}
+.sidebar-group-links{padding:0 7px 9px}
+.sidebar-group .nav{margin:3px 0;padding:9px 8px;font-size:12px}
+.aw-hero{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;margin-bottom:17px}
+.aw-hero small{display:block;color:var(--muted);margin-bottom:6px}
+.aw-hero strong{display:block;font-size:25px}
+.aw-hero p{font-size:12px;color:var(--muted);line-height:1.9;margin:8px 0 0}
+.aw-tools{display:flex;gap:8px;flex-wrap:wrap}
+.aw-categories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.aw-account{border:1px solid var(--border);background:var(--card);border-radius:16px;padding:14px;min-width:0}
+.aw-account h3{margin:0 0 8px;font-size:15px}
+.aw-analysis{margin-bottom:13px;padding:11px;border-radius:12px;background:var(--bg);border:1px solid var(--border)}
+.aw-analysis-title{font-size:12px;font-weight:700;margin-bottom:8px;color:var(--accent)}
+.aw-analysis-row{display:flex;justify-content:space-between;gap:7px;margin:6px 0;font-size:11px}
+.aw-field{display:block;margin:10px 0}
+.aw-field span{display:block;font-size:11px;color:var(--muted);margin-bottom:5px}
+.aw-field input{width:100%;border:1px solid var(--border);background:var(--input);color:var(--text);padding:10px;border-radius:10px;text-align:right;direction:ltr;font-variant-numeric:tabular-nums}
+.aw-field input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.aw-table-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:15px}
+.aw-panel{border:1px solid var(--border);background:var(--card);border-radius:16px;padding:16px;min-width:0}
+.aw-panel h3{margin:0 0 4px;font-size:15px}
+.aw-panel>p{color:var(--muted);font-size:11px;line-height:1.8;margin:0 0 10px}
+.aw-total{font-weight:800;font-size:18px;margin:10px 0}
+.aw-scroll{overflow-x:auto}
+.aw-scroll table{min-width:450px}
+.aw-scroll th,.aw-scroll td{padding:10px 6px;font-size:11px}
+.aw-scroll td:nth-child(2),.aw-scroll td:nth-child(3){white-space:nowrap;text-align:left}
+.aw-total-row{background:var(--sidebar);font-weight:800}
+.aw-strip{display:flex;height:10px;background:var(--border);border-radius:10px;overflow:hidden;margin-top:13px}
+.aw-strip span{height:100%}
+.aw-mini-bar{display:inline-block;width:45px;height:5px;background:var(--border);border-radius:5px;vertical-align:middle;overflow:hidden;margin-left:6px}
+.aw-mini-bar i{display:block;height:100%}
+.aw-message{margin:12px 0;font-size:12px;color:var(--muted);line-height:1.9}
+.aw-editor[hidden]{display:none}
+@media(max-width:1100px){.aw-categories{grid-template-columns:1fr 1fr}.aw-table-grid{grid-template-columns:1fr}}
+@media(max-width:700px){.aw-categories{grid-template-columns:1fr}.aw-hero strong{font-size:20px}}
+</style></head><body class="cloud-locked"><section id="cloudAuth" class="cloud-auth"><div class="cloud-auth-card"><div class="auth-icon">💳</div><div class="auth-eyebrow">WARM IVORY • PRIVATE FINANCE</div><h1>سامانه مدیریت مالی امیرحسین</h1><p>با حساب خصوصی خودت وارد شو تا اطلاعات شرکت و خانه از یک پایگاه داده امن بارگذاری شوند.</p><form id="cloudLoginForm" onsubmit="cloudLogin(event)"><label for="cloudEmail">ایمیل</label><input id="cloudEmail" type="email" autocomplete="username" required placeholder="you@example.com"><label for="cloudPassword">رمز عبور</label><input id="cloudPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="رمز عبور"><button type="submit" id="cloudLoginBtn" class="btn primary">ورود به سامانه</button></form><div class="auth-actions"><button type="button" class="btn" onclick="cloudSignup()">ساخت حساب جدید</button><button type="button" class="btn" onclick="cloudResetPassword()">بازیابی رمز</button></div><div id="cloudAuthMessage" role="status" class="auth-message">برای شروع، حساب کاربری خودت را بساز یا وارد شو.</div></div></section><div id="cloudStatus" class="cloud-status hidden" role="status"></div><aside><div class="brand">Warm Ivory ✦<div class="sub">مدیریت مالی شخصی</div></div><details class="sidebar-group" id="financeGroup" open><summary>💳 سامانه مدیریت مالی امیرحسین</summary><div class="sidebar-group-links"><button class="nav active" data-page="dashboard">🏠 نمای کلی</button><button class="nav" data-page="transactions">💸 تراکنش‌ها</button><button class="nav" data-page="accounts">🏦 حساب‌ها و کیف پول‌ها</button><button class="nav" data-page="reports">📊 گزارش‌ها و نمودارها</button><button class="nav" data-page="settings">🛠️ تنظیمات و پشتیبان</button></div></details><details class="sidebar-group" id="weightGroup"><summary>💎 وزن دارایی‌های امیرحسین</summary><div class="sidebar-group-links"><button class="nav" data-page="assetWeights">📊 ترکیب و وزن دارایی‌ها</button></div></details><button class="btn mode" id="appearanceBtn" type="button" aria-expanded="false" aria-controls="appearancePanel" onclick="toggleAppearancePanel()">🎨 شخصی‌سازی ظاهر</button><button class="btn mode" id="signOutBtn" onclick="cloudSignOut()">↪ خروج از حساب</button></aside><div id="appearancePanel" class="appearance-panel" role="region" aria-label="شخصی‌سازی ظاهر" hidden><div class="appearance-head"><strong>🎨 شخصی‌سازی ظاهر</strong><button class="btn" type="button" onclick="toggleAppearancePanel(false)" aria-label="بستن تنظیمات ظاهر">✕</button></div><p class="appearance-help">یکی از سه قالب رو انتخاب کن؛ حالت روشن و تاریک برای هر سه قالب در دسترسه.</p><span class="appearance-label">قالب رنگی</span><div class="palette-list"><button type="button" class="palette-choice" data-palette-choice="ivory" aria-pressed="true" onclick="setAppearancePalette('ivory')"><span class="palette-swatch ivory" aria-hidden="true"></span><span>Warm Ivory<small>کرم و قهوه‌ای فعلی</small></span></button><button type="button" class="palette-choice" data-palette-choice="sage" aria-pressed="false" onclick="setAppearancePalette('sage')"><span class="palette-swatch sage" aria-hidden="true"></span><span>Sage Green<small>سبز ملایم و آرام</small></span></button><button type="button" class="palette-choice" data-palette-choice="mist" aria-pressed="false" onclick="setAppearancePalette('mist')"><span class="palette-swatch mist" aria-hidden="true"></span><span>Mist Blue<small>آبی طوسی حرفه‌ای</small></span></button></div><span class="appearance-label">حالت نمایش</span><div class="appearance-modes"><button type="button" data-appearance-mode="light" aria-pressed="true" onclick="setAppearanceMode('light')">☀️ روشن</button><button type="button" data-appearance-mode="dark" aria-pressed="false" onclick="setAppearanceMode('dark')">🌙 تاریک</button></div></div><main><header class="top"><div><h1 id="heading">سامانه مدیریت مالی امیرحسین</h1><div class="sub" id="subtitle">داشبورد مدیریت مالی • ریال</div></div></header><div id="content"></div><div class="footer">Warm Ivory ✦ اطلاعات روی پایگاه داده خصوصی ذخیره می‌شوند؛ برای امنیت بیشتر نسخه پشتیبان JSON هم بگیرید.</div></main><div id="modalRoot"></div><script>
 const CLOUD_URL='https://efykcbdbygwpwcqyzjny.supabase.co';
 const CLOUD_KEY='sb_publishable_6AIpMThdUh52Va_c3D6aaA_d2TkGg4n';
 const CLOUD_AUTH_STORE='warm-ivory-auth-session-v1';
@@ -242,8 +283,97 @@ const motherRows=keys.map(k=>({label:monthTitle(k),value:monthlyBalance(k,'mothe
 const ds=debtStats();return `<div class="row"><div class="muted">📊 گزارش مالی • نمودارهای ستونی عمودی • ورودی مهر به معنی درآمد خالص نیست</div><select id="reportPeriod" class="btn" onchange="setReportPeriod(this.value)"><option value="monthly" ${selected==='monthly'?'selected':''}>ماهانه</option><option value="yearly" ${selected==='yearly'?'selected':''}>سالانه</option></select></div><div class="grid" style="margin-top:15px">${latest?card('آخرین دوره: درآمد',latest.income):'<div class="card"><small>آخرین دوره: درآمد</small><div class="amount">ثبت نشده</div></div>'}${latest?card('آخرین دوره: هزینه',latest.expense):'<div class="card"><small>آخرین دوره: هزینه</small><div class="amount">ثبت نشده</div></div>'}${latest&&prev?card('تغییر خالص نسبت به دوره قبل',latest.net-prev.net,'مقایسه با دوره قبل'):'<div class="card"><small>تغییر خالص نسبت به دوره قبل</small><div class="amount">ثبت نشده</div><div class="sub">دوره قبلی موجود نیست</div></div>'}</div>
 <div class="report-grid"><section class="panel report-panel"><h3>📊 مقایسه درآمد و هزینه</h3>${compareBars(rows)}</section><section class="panel report-panel"><h3>📈 روند خالص جریان نقدی</h3>${verticalBars(rows.filter(r=>r.count).map(r=>({label:r.label,value:r.net})),'signed')}</section><section class="panel report-panel"><h3>🧾 هزینه‌ها به تفکیک دسته</h3>${verticalBars(Object.entries(categories).sort((a,b)=>b[1]-a[1]).map(([label,value])=>({label,value,kind:'expense'})))}</section><section class="panel report-panel"><h3>🏦 موجودی حساب‌ها در ${monthTitle(selectedMonth)}</h3>${verticalBars(balanceRows)}</section><section class="panel report-panel"><h3>💳 روند مانده مادرخرج</h3>${verticalBars(motherRows,'signed')}</section><section class="panel report-panel"><h3>🤝 طلب‌ها و بدهی‌ها</h3>${verticalBars([{label:'طلب‌ها',value:ds.receivable,kind:'income'},{label:'بدهی‌ها',value:ds.payable,kind:'expense'}])}</section></div>
 <h2 class="section">جدول مقایسه دوره‌ها</h2><section class="panel">${table(['دوره','درآمد','هزینه','خالص'],rows.map(r=>`<tr><td>${r.label}</td><td>${r.count?money(r.income):'ثبت نشده'}</td><td>${r.count?money(r.expense):'ثبت نشده'}</td><td>${r.count?money(r.net):'ثبت نشده'}</td></tr>`))}</section><h2 class="section">گزارش تفصیلی تراکنش‌ها</h2><section class="panel">${table(['تاریخ','نوع','مبلغ','حساب','شرح','عملیات'],[...db.transactions].sort((a,b)=>b.date.localeCompare(a.date)).map(txRow))}</section><div class="formactions"><button class="btn" onclick="exportExcel()">خروجی Excel</button></div>`}
+
+/* Independent asset weights. Currency: integer IRR. Nothing here modifies the cash-flow ledger. */
+const AW_CATEGORIES=[
+ ['stocks','سهام','#647aa1'],
+ ['gold','صندوق‌های طلا','#c39b4e'],
+ ['fixed','درآمد ثابت','#73a18b'],
+ ['equity','صندوق‌های سهامی','#aa7d98'],
+ ['commodity','بورس کالا (گواهی سپرده کالایی)','#a28b72']
+];
+const AW_ACCOUNTS=[['selfMofid','مفید خودم'],['motherMofid','مفید مامان'],['selfAgah','آگاه خودم']];
+let awDraft=null,awEditing=false,awDirty=false;
+function awEmpty(){return Object.fromEntries(AW_ACCOUNTS.map(([id])=>[id,Object.fromEntries(AW_CATEGORIES.map(([key])=>[key,0]))]))}
+function awNormalize(source){
+ const result=awEmpty();
+ for(const [id] of AW_ACCOUNTS)for(const [category] of AW_CATEGORIES){
+  const value=source?.[id]?.[category];
+  if(Number.isSafeInteger(value)&&value>=0)result[id][category]=value;
+ }
+ return result;
+}
+function awStored(){return awNormalize(db.assetWeights)}
+function awTotal(account){return AW_CATEGORIES.reduce((s,[key])=>s+(account[key]||0),0)}
+function awCombined(data){
+ return Object.fromEntries(AW_CATEGORIES.map(([key])=>[key,AW_ACCOUNTS.reduce((s,[id])=>s+(data[id][key]||0),0)]))
+}
+function awPercent(value,whole){return whole?100*value/whole:0}
+function awPercentLabel(value,whole){return awPercent(value,whole).toLocaleString('fa-IR',{minimumFractionDigits:1,maximumFractionDigits:1})+'٪'}
+function awSummary(id,data){
+ const record=data[id],grand=awTotal(record);
+ return '<div class="aw-analysis" data-analysis="'+id+'"><div class="aw-analysis-title">تحلیل حساب • وزن هر دسته</div>'+AW_CATEGORIES.map(([cat,label])=>'<div class="aw-analysis-row"><span>'+label+'</span><strong>'+awPercentLabel(record[cat],grand)+'</strong></div>').join('')+'</div>';
+}
+function awCard(title,record,subtitle){
+ const grand=awTotal(record);
+ const rows=AW_CATEGORIES.map(([cat,label,color])=>{
+  const v=record[cat]||0,p=awPercent(v,grand);
+  return '<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+color+';margin-left:6px"></span>'+label+'</td><td>'+money(v)+'</td><td><span class="aw-mini-bar"><i style="width:'+p+'%;background:'+color+'"></i></span>'+awPercentLabel(v,grand)+'</td></tr>';
+ }).join('');
+ const strip=grand?AW_CATEGORIES.map(([cat,,color])=>'<span style="width:'+awPercent(record[cat]||0,grand)+'%;background:'+color+'"></span>').join(''):'';
+ return '<section class="aw-panel"><h3>'+title+'</h3><p>'+subtitle+'</p><div class="aw-total">'+money(grand)+'</div><div class="aw-scroll"><table><thead><tr><th>دسته دارایی</th><th>ارزش (ریال)</th><th>وزن در حساب</th></tr></thead><tbody>'+rows+'<tr class="aw-total-row"><td>جمع</td><td>'+money(grand)+'</td><td>'+(grand?'۱۰۰٫۰٪':'—')+'</td></tr></tbody></table></div><div class="aw-strip">'+strip+'</div></section>';
+}
+function assetWeights(){
+ const data=awDraft||awStored(),merged=awCombined(data),grand=awTotal(merged);
+ const editor=AW_ACCOUNTS.map(([id,name])=>'<section class="aw-account"><h3>'+name+'</h3>'+awSummary(id,data)+AW_CATEGORIES.map(([cat,label])=>'<label class="aw-field"><span>'+label+'</span><input type="text" inputmode="numeric" autocomplete="off" data-aw-account="'+id+'" data-aw-cat="'+cat+'" value="'+fmt(data[id][cat])+'" aria-label="ارزش '+label+' '+name+'"></label>').join('')+'</section>').join('');
+ return '<div class="aw-hero"><div><small>💎 ارزش کل دارایی‌های سه حساب (ریال)</small><strong id="awGrandTotal">'+money(grand)+'</strong><p>مجموع سه حساب، بر اساس ارزش ریالی پنج دسته سرمایه‌گذاری؛ بدون میانگین‌گیری از درصدها.</p></div><div class="aw-tools"><button type="button" class="btn primary" onclick="awToggleEditor()">'+(awEditing?'✕ بستن فرم':'✏️ تغییر ارزش‌ها')+'</button></div></div>'+
+ '<section id="awEditSection" class="aw-editor"'+(awEditing?'':' hidden')+'><form id="awForm" onsubmit="awSave(event)"><div class="aw-categories">'+editor+'</div><div class="formactions"><button type="submit" class="btn primary" id="awSaveBtn">💾 ذخیره ارزش‌ها</button><button type="button" class="btn" onclick="awResetForm()">انصراف از تغییرات</button></div></form><div class="aw-message" id="awEditMessage">همه مقادیر به ریال هستند. درصدها هم‌زمان با تایپ تغییر می‌کنند؛ اطلاعات فقط با «ذخیره ارزش‌ها» در حساب ابری ثبت می‌شوند.</div></section>'+
+ '<div class="aw-table-grid" id="awTableGrid">'+AW_ACCOUNTS.map(([id,name])=>awCard('📋 '+name,data[id],'ترکیب دارایی بر اساس نوع دارایی')).join('')+awCard('💎 جمع کل سه حساب',merged,'مجموع ارزش ریالی مفید خودم، مفید مامان و آگاه خودم')+'</div>'+
+ '<div class="notice">اطلاعات این بخش مستقل از دفتر مدیریت مالی است. مقادیر اولیه صفر هستند؛ برای نمایش دارایی واقعی، ارزش روز هر گروه را وارد و ذخیره کن. وزن هر دسته = ارزش دسته ÷ ارزش کل حساب × ۱۰۰.</div>';
+}
+function awRefreshDisplay(){
+ if(page!=='assetWeights'||!awDraft)return;
+ const merged=awCombined(awDraft),grand=awTotal(merged);
+ const totalNode=document.getElementById('awGrandTotal');if(totalNode)totalNode.textContent=money(grand);
+ const grid=document.getElementById('awTableGrid');
+ if(grid)grid.innerHTML=AW_ACCOUNTS.map(([id,name])=>awCard('📋 '+name,awDraft[id],'ترکیب دارایی بر اساس نوع دارایی')).join('')+awCard('💎 جمع کل سه حساب',merged,'مجموع ارزش ریالی مفید خودم، مفید مامان و آگاه خودم');
+ for(const [id] of AW_ACCOUNTS){const current=document.querySelector('[data-analysis="'+id+'"]');if(current)current.outerHTML=awSummary(id,awDraft)}
+ const message=document.getElementById('awEditMessage');if(message&&awDirty)message.textContent='تغییرات هنوز ذخیره نشده‌اند؛ پس از بررسی درصدها «ذخیره ارزش‌ها» را بزن.';
+}
+function awToggleEditor(){
+ if(awEditing&&awDirty&&!confirm('تغییرات ذخیره‌نشده کنار گذاشته شوند؟'))return;
+ awEditing=!awEditing;awDraft=awEditing?awStored():null;awDirty=false;render();
+}
+function awResetForm(){if(awDirty&&!confirm('تغییرات ذخیره‌نشده کنار گذاشته شوند؟'))return;awEditing=false;awDraft=null;awDirty=false;render()}
+function awInputChanged(input){
+ if(!awDraft)return;
+ const account=input.dataset.awAccount,cat=input.dataset.awCat;
+ if(!AW_ACCOUNTS.some(a=>a[0]===account)||!AW_CATEGORIES.some(a=>a[0]===cat))return;
+ const raw=String(input.value).replace(/[۰-۹]/g,c=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(c))).replace(/[٠-٩]/g,c=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(c))).replace(/[,٬،\s]/g,'');
+ if(!/^\d*$/.test(raw)||raw.length>16){input.setCustomValidity('مقدار باید عدد صحیح نامنفی باشد');input.reportValidity();return}
+ const amount=raw===''?0:Number(raw);
+ if(!Number.isSafeInteger(amount)||amount<0){input.setCustomValidity('عدد نامعتبر یا بیش از حد بزرگ است');input.reportValidity();return}
+ input.setCustomValidity('');awDraft[account][cat]=amount;awDirty=true;awRefreshDisplay();
+}
+function awBind(){
+ const form=document.getElementById('awForm');if(!form)return;
+ form.addEventListener('input',e=>{if(e.target.matches('[data-aw-account][data-aw-cat]'))awInputChanged(e.target)});
+}
+function awSave(e){
+ e.preventDefault();
+ if(!awDraft||!cloudReady||cloudBlocked||cloudSyncing||cloudPending!==null){alert('همگام‌سازی آماده نیست؛ بعد از تکمیل دوباره امتحان کن.');return}
+ for(const [id] of AW_ACCOUNTS)for(const [cat] of AW_CATEGORIES){
+  const n=awDraft[id][cat];if(!Number.isSafeInteger(n)||n<0){alert('مقادیر باید اعداد صحیح و نامنفی باشند.');return}
+ }
+ const grand=awTotal(awCombined(awDraft));
+ if(!Number.isSafeInteger(grand)){alert('مجموع اعداد بیش از حد مجاز است.');return}
+ db.assetWeights=structuredClone(awDraft);
+ awEditing=false;awDraft=null;awDirty=false;save();render();
+ cloudNotice('ارزش‌های دارایی برای ذخیره در فضای ابری ارسال شدند. وضعیت همگام‌سازی را بررسی کن.');
+}
+
 function settings(){return `<div class="panels"><section class="panel"><h3>نسخه پشتیبان و بازیابی</h3><p class="muted">پشتیبان JSON شامل حساب‌ها، تراکنش‌ها، دسته‌بندی‌ها و طلب‌هاست.</p><div class="formactions"><button class="btn primary" onclick="backup()">دریافت پشتیبان JSON</button><button class="btn" onclick="$('#restoreFile').click()">بازیابی JSON</button><input id="restoreFile" class="hidden" type="file" accept=".json,application/json" onchange="restoreFile(this)"></div><p class="tiny muted">آخرین پشتیبان ثبت‌شده: ${db.lastBackup?new Date(db.lastBackup).toLocaleString('fa-IR'):'هنوز تهیه نشده'}</p><div class="notice">یادآوری روزانه هنگام باز کردن سایت نمایش داده می‌شود؛ دانلود خودکار روزانه در مرورگر تضمین نمی‌شود.</div></section><section class="panel"><h3>خروجی داده‌ها</h3><p class="muted">گزارش تراکنش‌ها، حساب‌ها و طلب‌ها در قالب Excel.</p><button class="btn" onclick="exportExcel()">دریافت Excel (.xlsx)</button></section><section class="panel"><h3>✨ دسته‌بندی هوشمند تراکنش‌های قدیمی</h3><p class="muted">تراکنش‌های فاقد دسته‌بندی با توجه به شرح و نوع، فقط در دسته‌های موجود سایت قرار می‌گیرند. موارد مبهم بدون تغییر باقی می‌مانند. مبلغ، تاریخ، نوع و حساب هیچ رکوردی دست‌کاری نمی‌شود.</p><div id="smartCatPreview" class="notice">نسخه بررسی ۳ • برای مشاهده تعداد و مقصد دسته‌ها روی «بررسی دسته‌بندی‌ها» بزن.</div><div class="formactions"><button type="button" class="btn" onclick="previewSmartCategories()">بررسی دسته‌بندی‌ها</button><button type="button" class="btn primary" id="applySmartCat" onclick="applySmartCategories()" disabled>دریافت پشتیبان و اعمال دسته‌بندی‌ها</button></div></section><section class="panel"><h3>🗂️ مدیریت دسته‌بندی‌ها</h3><p class="muted">از فهرست زیر برای ویرایش نام یا حذف دسته‌بندی استفاده کنید. تراکنش‌ها هنگام حذف از بین نمی‌روند.</p><div class="field"><label>دسته‌بندی جدید</label><input id="newCat" placeholder="نام دسته‌بندی"></div><div class="formactions"><button type="button" class="btn primary" onclick="addCategory()">افزودن دسته‌بندی</button></div><div id="categoryList"></div></section><section class="panel"><h3>🏦 مدیریت حساب‌ها</h3><p class="muted">نام و نوع حساب‌ها را اصلاح کنید. حذف حساب دارای تراکنش، مانده افتتاحیه یا اتصال مادرخرج مجاز نیست.</p><div id="settingsAccounts"></div></section><section class="panel"><h3>امنیت و ذخیره‌سازی</h3><p class="muted">داده‌ها در فضای ذخیره محلی مرورگر فعلی نگهداری می‌شوند. این نسخه ورود کاربری یا همگام‌سازی ابری ندارد.</p><p class="muted">پاک کردن داده‌های سایت، حالت خصوصی مرورگر یا تغییر دستگاه ممکن است باعث از دست رفتن داده‌ها شود.</p><button class="btn danger" onclick="resetData()">حذف تمام داده‌های سایت</button></section></div>`}
-let page='dashboard';const titles={dashboard:'سامانه مدیریت مالی امیرحسین',transactions:'مدیریت تراکنش‌ها',accounts:'حساب‌ها و کیف پول‌ها',reports:'گزارش‌ها و نمودارها',settings:'تنظیمات و پشتیبان'};
+let page='dashboard';const titles={dashboard:'سامانه مدیریت مالی امیرحسین',transactions:'مدیریت تراکنش‌ها',accounts:'حساب‌ها و کیف پول‌ها',reports:'گزارش‌ها و نمودارها',settings:'تنظیمات و پشتیبان',assetWeights:'وزن دارایی‌های امیرحسین'};
 function persianDigits(root){if(!root)return;const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode())if(n.nodeValue&&/[0-9٠-٩]/.test(n.nodeValue))n.nodeValue=n.nodeValue.replace(/[0-9]/g,c=>'۰۱۲۳۴۵۶۷۸۹'[+c]).replace(/[٠-٩]/g,c=>'۰۱۲۳۴۵۶۷۸۹'['٠١٢٣٤٥٦٧٨٩'.indexOf(c)])}
 function reviewNote(){return ''}
 function checkMotherWarning(){if(selectedMonth==='1405-07')return;const b=monthlyBalance(selectedMonth,'mother'),threshold=50000000;let box=$('#motherAlert');if(box)box.remove();if(b===null)return;let div=document.createElement('div');div.id='motherAlert';div.className='notice warning';div.setAttribute('role','alert');if(b<0)div.textContent='⚠️ هشدار: مانده مادرخرج منفی است ('+money(b)+').';else if(b<=threshold)div.textContent='⚠️ مانده مادرخرج نزدیک صفر است ('+money(b)+'). آستانه هشدار: '+money(threshold);else return;let content=$('#content');content?.prepend(div);persianDigits(div)}
@@ -298,7 +428,7 @@ document.addEventListener('pointerdown',event=>{
  if(panel&&!panel.hidden&&!panel.contains(event.target)&&!trigger?.contains(event.target))toggleAppearancePanel(false);
 });
 
-function render(){applyAppearance();$('#heading').textContent=titles[page];$('#content').innerHTML=({dashboard,transactions,accounts,reports,settings}[page])();document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.page===page));if(page==='transactions'){const search=$('#txSearch');if(search){search.addEventListener('input',filterTx);search.addEventListener('search',filterTx);search.addEventListener('keyup',filterTx)}const monthSel=$('#ifMonth');if(monthSel)monthSel.value=selectedMonth;inlineTxFields();renderInlineCalendar();updateInlineDateButton();filterTx();}if(page==='settings'){renderCategories();renderSettingsAccounts();}persianDigits($('#content'));persianDigits($('#heading'));checkMotherWarning()}function go(p){page=p;render();window.scrollTo(0,0)}document.querySelectorAll('.nav').forEach(n=>n.onclick=()=>go(n.dataset.page));function modal(title,body){$('#modalRoot').innerHTML=`<div class="modal" id="overlay"><div class="panel"><div class="row"><h2>${esc(title)}</h2><button class="btn" onclick="closeModal()">✕</button></div>${body}</div></div>`;$('#overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeModal()})}function closeModal(){$('#modalRoot').innerHTML=''}
+function render(){applyAppearance();$('#heading').textContent=titles[page];$('#content').innerHTML=({dashboard,transactions,accounts,reports,settings,assetWeights}[page])();document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('active',n.dataset.page===page));if(page==='transactions'){const search=$('#txSearch');if(search){search.addEventListener('input',filterTx);search.addEventListener('search',filterTx);search.addEventListener('keyup',filterTx)}const monthSel=$('#ifMonth');if(monthSel)monthSel.value=selectedMonth;inlineTxFields();renderInlineCalendar();updateInlineDateButton();filterTx();}if(page==='settings'){renderCategories();renderSettingsAccounts();}if(page==='assetWeights')awBind();persianDigits($('#content'));persianDigits($('#heading'));checkMotherWarning()}function go(p){if(page==='assetWeights'&&awDirty&&p!=='assetWeights'&&!confirm('تغییرات دارایی هنوز ذخیره نشده‌اند. بدون ذخیره از صفحه خارج می‌شوی؟'))return;if(page==='assetWeights'&&p!=='assetWeights'){awEditing=false;awDraft=null;awDirty=false}page=p;const finance=document.getElementById('financeGroup'),weight=document.getElementById('weightGroup');if(finance&&weight){finance.open=p!=='assetWeights';weight.open=p==='assetWeights'}render();window.scrollTo(0,0)}document.querySelectorAll('.nav').forEach(n=>n.onclick=()=>go(n.dataset.page));document.querySelectorAll('.sidebar-group').forEach(group=>group.addEventListener('toggle',()=>{if(group.open)document.querySelectorAll('.sidebar-group').forEach(other=>{if(other!==group)other.open=false})}));function modal(title,body){$('#modalRoot').innerHTML=`<div class="modal" id="overlay"><div class="panel"><div class="row"><h2>${esc(title)}</h2><button class="btn" onclick="closeModal()">✕</button></div>${body}</div></div>`;$('#overlay').addEventListener('click',e=>{if(e.target.id==='overlay')closeModal()})}function closeModal(){$('#modalRoot').innerHTML=''}
 function formatTxAmount(input){if(!input)return;const old=input.value,start=input.selectionStart??old.length,rawBefore=old.slice(0,start).replace(/[^0-9۰-۹٠-٩]/g,'');const digits=old.replace(/[۰-۹]/g,c=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(c)).replace(/[٠-٩]/g,c=>'٠١٢٣٤٥٦٧٨٩'.indexOf(c)).replace(/\D/g,'');const cleaned=digits.replace(/^0+(?=\d)/,'');const display=cleaned.replace(/\B(?=(\d{3})+(?!\d))/g,'٬').replace(/\d/g,c=>'۰۱۲۳۴۵۶۷۸۹'[+c]);input.value=display;let digitCount=rawBefore.length,pos=0,seen=0;while(pos<display.length&&seen<digitCount){if(/[۰-۹]/.test(display[pos]))seen++;pos++}try{input.setSelectionRange(pos,pos)}catch{}}
 function inlineTxFields(category){let type=$('#ifType')?.value;if(!type)return;$('#inlineToField')?.classList.toggle('hidden',type!=='transfer');$('#inlineCategoryField')?.classList.toggle('hidden',!['expense','income_salary','income_sales','income'].includes(type));let label=$('#inlineFromLabel');if(label)label.textContent=type==='transfer'?'حساب مبدأ':'حساب';let cat=$('#ifCategory');if(cat)cat.innerHTML=(db.categories[type==='income_salary'||type==='income_sales'?'income':type]||[]).map(c=>`<option value="${esc(c)}" ${c===category?'selected':''}>${esc(c)}</option>`).join('')}
 function submitInlineTx(e){e.preventDefault();let type=$('#ifType').value,amount=val($('#ifAmount').value),accountId=$('#ifAccount').value,to=$('#ifTo').value,date;try{date=selectedInlineSolarISO()}catch(e){alert(e.message);return}if(!Number.isSafeInteger(amount)||amount<=0){alert('مبلغ باید عدد صحیح مثبت و معتبر باشد.');return}if(type==='transfer'&&canonicalAccount(accountId)===canonicalAccount(to)){alert('حساب مبدأ و مقصد باید متفاوت باشند.');return}const aliases={income_salary:['income','salary'],income_sales:['income','sales'],investment_stock:['investment','stock'],investment_commodity:['investment','commodity'],capital_return:['redemption','capital_return']};if(monthKey(date)!==selectedMonth){alert('تاریخ تراکنش باید در ماه مالی انتخاب‌شده باشد.');return}

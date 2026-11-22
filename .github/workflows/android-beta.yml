@@ -154,7 +154,7 @@ jobs:
           test -s "$APK"
           ls -lh "$APK"
           unzip -t "$APK" | tail -n 2
-          APKSIGNER=$(find /usr/local/lib/android /opt/android -type f -name apksigner 2>/dev/null | sort -V | tail -n 1)
+          APKSIGNER="${ANDROID_HOME:-/usr/local/lib/android/sdk}/build-tools/35.0.0/apksigner"
           test -n "$APKSIGNER"
           "$APKSIGNER" verify --verbose --print-certs "$APK"
           echo "APK_BYTES=$(stat -c%s "$APK")" >> "$GITHUB_STEP_SUMMARY"

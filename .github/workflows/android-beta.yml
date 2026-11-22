@@ -4,7 +4,7 @@ on:
     branches: [android-beta]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -40,8 +40,8 @@ jobs:
                   applicationId 'com.amirhossein.warmivory'
                   minSdk 26
                   targetSdk 35
-                  versionCode 1
-                  versionName '0.1.0-beta'
+                  versionCode 2
+                  versionName '0.2.0-beta'
               }
               compileOptions {
                   sourceCompatibility JavaVersion.VERSION_17
@@ -146,6 +146,26 @@ jobs:
           gradle-version: '8.9'
       - name: Compile installable APK
         run: gradle :app:assembleDebug --no-daemon
+      - name: Verify APK integrity, signature and actual file size
+        shell: bash
+        run: |
+          set -euo pipefail
+          APK="app/build/outputs/apk/debug/app-debug.apk"
+          test -s "$APK"
+          ls -lh "$APK"
+          unzip -t "$APK" | tail -n 2
+          APKSIGNER=$(find /usr/local/lib/android /opt/android -type f -name apksigner 2>/dev/null | sort -V | tail -n 1)
+          test -n "$APKSIGNER"
+          "$APKSIGNER" verify --verbose --print-certs "$APK"
+          echo "APK_BYTES=$(stat -c%s "$APK")" >> "$GITHUB_STEP_SUMMARY"
+      - name: Publish direct APK download as GitHub prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          cp app/build/outputs/apk/debug/app-debug.apk "Warm-Ivory-Finance-Android-v0.2-beta.apk"
+          gh release create "android-beta-v0.2" "Warm-Ivory-Finance-Android-v0.2-beta.apk" --title "Warm Ivory Finance Android Beta v0.2" --notes "Experimental signed debug APK. The app opens the online finance dashboard; verify the site and data before editing. Android 8.0+." --prerelease --target "$GITHUB_SHA"
       - uses: actions/upload-artifact@v4
         with:
           name: Warm-Ivory-Android-Beta-APK

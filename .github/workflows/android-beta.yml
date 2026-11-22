@@ -2,6 +2,8 @@ name: Build Android APK
 on:
   push:
     branches: [android-beta]
+    paths-ignore:
+      - 'android-builds/**'
   workflow_dispatch:
 permissions:
   contents: write
@@ -166,6 +168,17 @@ jobs:
           set -euo pipefail
           cp app/build/outputs/apk/debug/app-debug.apk "Warm-Ivory-Finance-Android-v0.2-beta.apk"
           gh release create "android-beta-v0.2" "Warm-Ivory-Finance-Android-v0.2-beta.apk" --title "Warm Ivory Finance Android Beta v0.2" --notes "Experimental signed debug APK. The app opens the online finance dashboard; verify the site and data before editing. Android 8.0+." --prerelease --target "$GITHUB_SHA"
+      - name: Commit APK to repository for alternate download
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p android-builds
+          cp app/build/outputs/apk/debug/app-debug.apk android-builds/Warm-Ivory-Finance-Android-v0.2-beta.apk
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add android-builds/Warm-Ivory-Finance-Android-v0.2-beta.apk
+          git commit -m "Publish Android beta APK binary for direct raw download [skip ci]"
+          git push origin HEAD:android-beta
       - uses: actions/upload-artifact@v4
         with:
           name: Warm-Ivory-Android-Beta-APK

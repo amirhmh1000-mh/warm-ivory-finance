@@ -167,7 +167,11 @@ jobs:
         run: |
           set -euo pipefail
           cp app/build/outputs/apk/debug/app-debug.apk "Warm-Ivory-Finance-Android-v0.2-beta.apk"
-          gh release create "android-beta-v0.2" "Warm-Ivory-Finance-Android-v0.2-beta.apk" --title "Warm Ivory Finance Android Beta v0.2" --notes "Experimental signed debug APK. The app opens the online finance dashboard; verify the site and data before editing. Android 8.0+." --prerelease --target "$GITHUB_SHA"
+          if gh release view "android-beta-v0.2" >/dev/null 2>&1; then
+            gh release upload "android-beta-v0.2" "Warm-Ivory-Finance-Android-v0.2-beta.apk" --clobber
+          else
+            gh release create "android-beta-v0.2" "Warm-Ivory-Finance-Android-v0.2-beta.apk" --title "Warm Ivory Finance Android Beta v0.2" --notes "Experimental signed debug APK. Verify website and data before editing." --prerelease --target "$GITHUB_SHA"
+          fi
       - name: Commit APK to repository for alternate download
         shell: bash
         run: |

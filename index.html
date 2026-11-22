@@ -166,6 +166,20 @@ body.dark[data-palette="mist"]{--bg:#15222e;--card:#213140;--sidebar:#192a39;--t
 #awTableGrid .aw-account-panels .aw-scroll table{min-width:520px}
 #awTableGrid .aw-bottom-panels .aw-scroll table{min-width:520px}
 
+/* Keep the account-weight column visible in the three compact portfolio cards.
+   The former 520px minimum table width caused horizontal clipping. */
+@media(min-width:1501px){
+  #awTableGrid .aw-account-panels .aw-scroll table{min-width:0;width:100%}
+}
+@media(min-width:1051px) and (max-width:1500px){
+  #awTableGrid .aw-account-panels{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #awTableGrid .aw-account-panels .aw-panel:last-child{grid-column:1/-1}
+}
+#awTableGrid .aw-account-panels .aw-scroll th:nth-child(3),
+#awTableGrid .aw-account-panels .aw-scroll td:nth-child(3){
+  text-align:right;padding-right:9px;padding-left:3px;
+}
+
 /* Expense categories: horizontal bars, month-specific view and readable labels below. */
 .expense-panel-head{margin-bottom:15px}
 .expense-panel-head h3{margin:0}

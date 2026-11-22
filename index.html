@@ -124,6 +124,8 @@ body.dark[data-palette="mist"]{--bg:#15222e;--card:#213140;--sidebar:#192a39;--t
 .aw-scroll table{min-width:450px}
 .aw-scroll th,.aw-scroll td{padding:10px 6px;font-size:11px}
 .aw-scroll td:nth-child(2),.aw-scroll td:nth-child(3){white-space:nowrap;text-align:left}
+/* Small inset keeps the account-weight column legible at the left edge. */
+.aw-scroll th:nth-child(3),.aw-scroll td:nth-child(3){padding-left:16px}
 .aw-total-row{background:var(--sidebar);font-weight:800}
 .aw-strip{display:flex;height:10px;background:var(--border);border-radius:10px;overflow:hidden;margin-top:13px}
 .aw-strip span{height:100%}

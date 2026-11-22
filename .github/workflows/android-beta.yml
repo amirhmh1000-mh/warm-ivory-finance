@@ -1,0 +1,151 @@
+name: Build Android APK
+on:
+  push:
+    branches: [android-beta]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Prepare Android app
+        shell: bash
+        run: |
+          mkdir -p app/src/main/java/com/amirhossein/warmivory app/src/main/res/values app/src/main/res/drawable
+          cat > settings.gradle <<'EOT'
+          pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+          dependencyResolutionManagement { repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS); repositories { google(); mavenCentral() } }
+          rootProject.name = 'WarmIvoryFinance'
+          include ':app'
+          EOT
+          cat > build.gradle <<'EOT'
+          plugins { id 'com.android.application' version '8.7.3' apply false }
+          EOT
+          cat > gradle.properties <<'EOT'
+          org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
+          android.useAndroidX=true
+          EOT
+          cat > app/build.gradle <<'EOT'
+          plugins { id 'com.android.application' }
+          android {
+              namespace 'com.amirhossein.warmivory'
+              compileSdk 35
+              defaultConfig {
+                  applicationId 'com.amirhossein.warmivory'
+                  minSdk 26
+                  targetSdk 35
+                  versionCode 1
+                  versionName '0.1.0-beta'
+              }
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+          }
+          EOT
+          cat > app/src/main/AndroidManifest.xml <<'EOT'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+            <uses-permission android:name="android.permission.INTERNET"/>
+            <application android:allowBackup="false" android:label="مدیریت مالی امیرحسین" android:usesCleartextTraffic="false" android:theme="@style/AppTheme" android:supportsRtl="true" android:icon="@drawable/ic_launcher">
+              <activity android:name=".MainActivity" android:exported="true" android:windowSoftInputMode="adjustResize">
+                <intent-filter><action android:name="android.intent.action.MAIN"/><category android:name="android.intent.category.LAUNCHER"/></intent-filter>
+              </activity>
+            </application>
+          </manifest>
+          EOT
+          cat > app/src/main/res/values/styles.xml <<'EOT'
+          <resources><style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar"><item name="android:statusBarColor">#F7F3ED</item><item name="android:navigationBarColor">#F7F3ED</item><item name="android:windowLightStatusBar">true</item></style></resources>
+          EOT
+          cat > app/src/main/res/drawable/ic_launcher.xml <<'EOT'
+          <vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+            <path android:fillColor="#F7F3ED" android:pathData="M0,0h108v108h-108z"/>
+            <path android:fillColor="#20344A" android:pathData="M17,14h74a10,10 0,0 1,10 10v60a10,10 0,0 1,-10 10h-74a10,10 0,0 1,-10 -10v-60a10,10 0,0 1,10 -10z"/>
+            <path android:fillColor="#D4B477" android:pathData="M29,76L43,56 54,66 77,34 84,39 56,78 44,67 35,81z"/>
+          </vector>
+          EOT
+          cat > app/src/main/java/com/amirhossein/warmivory/MainActivity.java <<'EOT'
+          package com.amirhossein.warmivory;
+          import android.app.Activity;
+          import android.os.Bundle;
+          import android.content.Intent;
+          import android.net.Uri;
+          import android.view.View;
+          import android.webkit.WebView;
+          import android.webkit.WebViewClient;
+          import android.webkit.WebChromeClient;
+          import android.webkit.WebSettings;
+          import android.webkit.CookieManager;
+          import android.webkit.WebResourceRequest;
+          import android.webkit.WebResourceError;
+          import android.webkit.ValueCallback;
+          import android.widget.Toast;
+          public class MainActivity extends Activity {
+            private static final String HOME = "https://amirhmh1000-mh.github.io/warm-ivory-finance/";
+            private WebView web;
+            private ValueCallback<Uri[]> chooser;
+            @Override public void onCreate(Bundle b) {
+              super.onCreate(b);
+              web = new WebView(this);
+              web.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+              web.setBackgroundColor(0xfff7f3ed);
+              WebSettings s = web.getSettings();
+              s.setJavaScriptEnabled(true);
+              s.setDomStorageEnabled(true);
+              s.setUseWideViewPort(true);
+              s.setLoadWithOverviewMode(true);
+              s.setBuiltInZoomControls(false);
+              s.setAllowFileAccess(false);
+              s.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+              CookieManager.getInstance().setAcceptCookie(true);
+              CookieManager.getInstance().setAcceptThirdPartyCookies(web,true);
+              web.setWebChromeClient(new WebChromeClient() {
+                @Override public boolean onShowFileChooser(WebView v, ValueCallback<Uri[]> cb, FileChooserParams p) {
+                  if (chooser != null) chooser.onReceiveValue(null);
+                  chooser=cb;
+                  try { startActivityForResult(p.createIntent(),42); return true; }
+                  catch(Exception e) {chooser=null;cb.onReceiveValue(null);return false;}
+                }
+              });
+              web.setWebViewClient(new WebViewClient() {
+                @Override public boolean shouldOverrideUrlLoading(WebView v, WebResourceRequest req) {
+                  Uri u=req.getUrl();
+                  if ("http".equals(u.getScheme()) || "https".equals(u.getScheme())) return false;
+                  try {startActivity(new Intent(Intent.ACTION_VIEW,u));}catch(Exception ignored){}
+                  return true;
+                }
+                @Override public void onReceivedError(WebView v, WebResourceRequest req, WebResourceError e) {
+                  if(req.isForMainFrame()) Toast.makeText(MainActivity.this,"اتصال اینترنت یا سایت را بررسی کنید",Toast.LENGTH_LONG).show();
+                }
+              });
+              setContentView(web);
+              if(b==null) web.loadUrl(HOME); else web.restoreState(b);
+            }
+            @Override protected void onActivityResult(int request, int result, Intent data) {
+              super.onActivityResult(request,result,data);
+              if(request==42 && chooser!=null) {chooser.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(result,data));chooser=null;}
+            }
+            @Override protected void onSaveInstanceState(Bundle state){web.saveState(state);super.onSaveInstanceState(state);}
+            @Override public void onBackPressed(){if(web.canGoBack())web.goBack();else super.onBackPressed();}
+          }
+          EOT
+      - name: Install Android SDK
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Compile installable APK
+        run: gradle :app:assembleDebug --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Warm-Ivory-Android-Beta-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+          if-no-files-found: error

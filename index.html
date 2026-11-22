@@ -485,6 +485,7 @@ const AW_CATEGORIES=[
  ['commodity','بورس کالا (گواهی سپرده کالایی)','#a28b72']
 ];
 // PRX is available only from Azar 1405 onward; previous months retain their five categories.
+// Deployment refresh for PRX visibility (no changes to transactions or stored balances).
 const awCategories=(month=awSelectedMonth)=>month>='1405-09'?[...AW_CATEGORIES,['prx','سبد PRX','#7e92b9']]:AW_CATEGORIES;
 const AW_ACCOUNTS=[['selfMofid','مفید خودم'],['motherMofid','مفید مامان'],['selfAgah','آگاه خودم']];
 let awDraft=null,awEditing=false,awDirty=false;
